@@ -2,6 +2,7 @@ package pl.automatyzacja.cart.service.test;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import pl.automatyzacja.cart.service.test.serializing.AddItemToCartRequestPOJO;
 import utils.GetPropertyValues;
 
 import java.util.Map;
@@ -30,7 +31,7 @@ public class ServiceHelper {
                 .post(endpoint);
     }
 
-    public void sendPostRequest(Map<String, Object> queryParamsBody, String endpoint) {
+    public Response sendPostRequest(Map<String, Object> queryParamsBody, String endpoint) {
         SAMPLE_REST.response = given()
                 .auth()
                 .preemptive()
@@ -38,9 +39,11 @@ public class ServiceHelper {
                 .queryParams(queryParamsBody)
                 .baseUri(BASE_URI)
                 .post(endpoint);
+
+        return SAMPLE_REST.response;
     }
 
-    public void sendPostRequest(String body, String endpoint) {
+    public Response sendPostRequest(String body, String endpoint) {
         SAMPLE_REST.response = given()
                 .auth()
                 .preemptive()
@@ -50,6 +53,8 @@ public class ServiceHelper {
                 .body(body)
                 .baseUri(BASE_URI)
                 .post(endpoint);
+
+        return SAMPLE_REST.response;
     }
 
     public Response sendGetRequest(String endpoint) {
@@ -122,6 +127,20 @@ public class ServiceHelper {
                 .body(body)
                 .baseUri(BASE_URI)
                 .patch(endpoint);
+    }
+
+    public Response sendPostRequest(AddItemToCartRequestPOJO body, String endpoint) {
+        SAMPLE_REST.response = given()
+                .auth()
+                .preemptive()
+                .basic(LOGIN, PASSWORD)
+                .contentType("application/json")
+                //.contentType(ContentType.JSON)
+                .body(body)
+                .baseUri(BASE_URI)
+                .post(endpoint);
+
+        return SAMPLE_REST.response;
     }
 
     class SampleRest {
